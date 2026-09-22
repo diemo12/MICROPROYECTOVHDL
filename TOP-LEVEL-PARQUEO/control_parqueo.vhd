@@ -1,17 +1,18 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
 entity control_parqueo is
     port (
-        clk_1hz      : in std_logic;
-        sensor       : in std_logic; 
-        rst          : in std_logic;
-        contador_35unidades   : out integer range 0 to 9;
-        contador_35decenas   : out integer range 0 to 9;
-        contador_extraunidades   : out integer range 0 to 9;
-        contador_extradecenas   : out integer range 0 to 9;
-        alarma       : out std_logic;
-        felicitacion : out std_logic
+        clk_1hz                : in std_logic;
+        sensor                 : in std_logic; 
+        rst                    : in std_logic;
+        contador_35unidades    : out std_logic_vector(3 downto 0);
+        contador_35decenas     : out std_logic_vector(3 downto 0);
+        contador_extraunidades : out std_logic_vector(3 downto 0);
+        contador_extradecenas  : out std_logic_vector(3 downto 0);
+        alarma                 : out std_logic;
+        felicitacion           : out std_logic
     );
 end control_parqueo;
 
@@ -55,7 +56,6 @@ begin
                     
                 when EXTRA_TIEMPO =>
                     if sensor = '0' then
-                       
                         estado_actual <= LIBRE;
                     else
                         if tiempo_extra < 99 then
@@ -67,15 +67,14 @@ begin
                     if sensor = '1' then 
                         estado_actual <= CONTANDO_35;
                         felicitacion <= '0';
-                         tiempo_35s <= 0;
+                        tiempo_35s <= 0;
                     end if;
             end case;
         end if;
     end process;
 
-
-    contador_35unidades <= tiempo_35s mod 10;
-    contador_35decenas <= tiempo_35s / 10;
-   contador_extraunidades <= tiempo_extra mod 10;
-    contador_extradecenas <= tiempo_extra / 10;
+    contador_35unidades    <= std_logic_vector(to_unsigned(tiempo_35s mod 10, 4));
+    contador_35decenas     <= std_logic_vector(to_unsigned(tiempo_35s / 10, 4));
+    contador_extraunidades <= std_logic_vector(to_unsigned(tiempo_extra mod 10, 4));
+    contador_extradecenas  <= std_logic_vector(to_unsigned(tiempo_extra / 10, 4));
 end comportamental;
