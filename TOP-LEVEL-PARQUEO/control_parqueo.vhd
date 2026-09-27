@@ -28,7 +28,9 @@ begin
 -- Si la persona esta adentro, el temporizador corre hasta 35 segundos; al pasarse de ese tiempo, enciendo el led de alarma y arranco el temporizador extra.
 -- Si la persona sale antes de los 35 segundos, apago las cuentas y activo el led de felicitacion.
 process(clk_1hz, rst)
+
 begin
+    
     if rst = '1' then
         sensor_comp     <= '0';
         t35_u           <= (others => '0');
@@ -45,8 +47,8 @@ begin
         if sensor = '1' then
             felicitacion <= '0';
 
+            
             if sensor_comp = '0' then
-                
                 t35_u           <= (others => '0');
                 t35_d           <= (others => '0');
                 textra_u        <= (others => '0');
@@ -54,8 +56,8 @@ begin
                 alarma          <= '0';
                 tiempo_35_listo <= '0';
             else
+               
                 if tiempo_35_listo = '0' then
-                    
                     if t35_u = 9 then
                         t35_u <= (others => '0');
                         t35_d <= t35_d + 1;
@@ -63,12 +65,10 @@ begin
                         t35_u <= t35_u + 1;
                     end if;
                     
-                    
                     if t35_d = 3 and t35_u = 4 then
                         tiempo_35_listo <= '1';
                     end if;
                 else
-                    
                     alarma <= '1';
                     if not (textra_d = 9 and textra_u = 9) then 
                         if textra_u = 9 then
@@ -82,17 +82,12 @@ begin
             end if;
 
         else
-            
+          
             if sensor_comp = '1' and tiempo_35_listo = '0' and (t35_u > 0 or t35_d > 0) then
                 felicitacion <= '1';
             end if;
-
-            alarma          <= '0';
-            t35_u           <= (others => '0');
-            t35_d           <= (others => '0');
-            textra_u        <= (others => '0');
-            textra_d        <= (others => '0');
-            tiempo_35_listo <= '0';
+            alarma <= '0';
+            
         end if;
     end if;
 end process;
