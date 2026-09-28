@@ -1,9 +1,7 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-
-entity divisor_1hz is
-    port (
-        clk_50Mhz : in std_logic;
+-- El módulo divisor_1hz opera de forma síncrona contando los flancos de subida del reloj maestro de 50 MHz mediante un registro interno de enteros de 0 a 24.999.999
+-- cada vez que el acumulador alcanza dicho límite equivalente a medio segundo exacto se reinicia a cero
         rst       : in std_logic;
         clk_1hz   : out std_logic
     );
