@@ -20,7 +20,7 @@ entity cronometro_top is
         BTN_START : in  std_logic; 
         BTN_STOP  : in  std_logic;
         BTN_RESET : in  std_logic;
-       
+        point		 : out  std_logic;
         HEX0      : out std_logic_vector(6 downto 0); 
         HEX1      : out std_logic_vector(6 downto 0); 
         HEX2      : out std_logic_vector(6 downto 0)  
@@ -102,7 +102,7 @@ begin
         end if;
     end process;
 
-  
+    point<= '0';
     DISP_SEC_U : segundo_comp port map (g => std_logic_vector(sec_u), f => HEX0);
     DISP_SEC_D : segundo_comp port map (g => std_logic_vector(sec_d), f => HEX1);
     DISP_MIN   : segundo_comp port map (g => std_logic_vector(min),   f => HEX2);
